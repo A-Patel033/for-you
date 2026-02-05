@@ -26,56 +26,21 @@
             width: 90%;
             z-index: 10;
         }
-        h1 {
-            color: #ff4d4d;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-        img {
-            width: 100%;
-            height: auto;
-            max-height: 40vh;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            object-fit: cover;
-        }
-        .btn-group {
-            position: relative;
-            height: 60px;
-            margin-top: 20px;
-        }
-        button {
-            padding: 12px 35px;
-            font-size: 18px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            color: white;
-            font-weight: bold;
-        }
-        #yesBtn {
-            background-color: #ff4d4d; /* Matching the red theme */
-            transition: transform 0.3s;
-        }
-        #yesBtn:hover {
-            transform: scale(1.1);
-        }
-        #noBtn {
-            background-color: #888; /* Grey so it looks less "clickable" */
-            position: absolute;
-            left: 55%;
-            transition: 0.1s;
-        }
-        #message {
-            display: none;
-            color: #ff4d4d;
-            font-size: 26px;
-            margin-top: 20px;
-            font-weight: bold;
-        }
+        h1 { color: #ff4d4d; font-size: 28px; margin-bottom: 20px; }
+        img { width: 100%; height: auto; max-height: 40vh; border-radius: 15px; margin-bottom: 20px; object-fit: cover; }
+        .btn-group { position: relative; height: 60px; margin-top: 20px; }
+        button { padding: 12px 35px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; color: white; font-weight: bold; }
+        #yesBtn { background-color: #ff4d4d; transition: transform 0.3s; }
+        #yesBtn:hover { transform: scale(1.1); }
+        #noBtn { background-color: #888; position: absolute; left: 55%; transition: 0.1s; }
+        #message { display: none; color: #ff4d4d; font-size: 26px; margin-top: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
+
+    <audio id="romanticMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="container">
         <img id="mainImage" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2QzOTA3M2U0OTI1ODQ2OTg2NDQzNTJjZTI4MzFhOWQ5N2JkODFkMyZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/3o7TKoWXm3okO1kgHC/giphy.gif" alt="Cute Bear">
@@ -95,49 +60,33 @@
     <script>
         function moveButton() {
             const btn = document.getElementById('noBtn');
-            // Calculate random positions, but keep the button away from the screen edges
             const x = Math.random() * (window.innerWidth - btn.offsetWidth - 40) + 20;
             const y = Math.random() * (window.innerHeight - btn.offsetHeight - 40) + 20;
-            
             btn.style.position = 'fixed';
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
         }
 
         function acceptLove() {
-            // 1. Hide the question and buttons
+            // 1. Play Music
+            const music = document.getElementById('romanticMusic');
+            music.play();
+
+            // 2. Hide Question/Buttons
             document.getElementById('question').style.display = 'none';
             document.querySelector('.btn-group').style.display = 'none';
             
-            // 2. Show the success message
+            // 3. Show Message & Happy GIF
             document.getElementById('message').style.display = 'block';
-            
-            // 3. Change to a happy GIF
             document.getElementById('mainImage').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJpYmJueW01dm8zYmZqamM5M2ZidG50Z3R4bmh0bmh0bmh0bmh0JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/K979lF5t6q0vC/giphy.gif";
 
-            // 4. TRIGGER CONFETTI!
-            var duration = 3 * 1000;
+            // 4. Confetti Explosion
+            var duration = 5 * 1000;
             var end = Date.now() + duration;
-
             (function frame() {
-              confetti({
-                particleCount: 3,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0 },
-                colors: ['#ff4d4d', '#ffccd5']
-              });
-              confetti({
-                particleCount: 3,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1 },
-                colors: ['#ff4d4d', '#ffccd5']
-              });
-
-              if (Date.now() < end) {
-                requestAnimationFrame(frame);
-              }
+              confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4d4d', '#ffccd5'] });
+              confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4d4d', '#ffccd5'] });
+              if (Date.now() < end) { requestAnimationFrame(frame); }
             }());
         }
     </script>
