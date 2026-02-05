@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Question for You ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body {
-            background-color: #ffe6e6; /* Light pink background */
+            background-color: #ffe6e6;
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Changed to min-height for better mobile view */
+            min-height: 100vh;
             margin: 0;
-            overflow: hidden; /* Prevents scrollbars when button moves */
+            overflow: hidden;
         }
         .container {
             text-align: center;
@@ -21,20 +22,19 @@
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            /* UPDATED: Made the container wider to accommodate a bigger image */
             max-width: 600px; 
-            width: 90%; /* Ensures it looks good on mobile too */
+            width: 90%;
+            position: relative;
         }
         h1 {
             color: #ff4d4d;
             font-size: 28px;
             margin-bottom: 20px;
         }
-        /* UPDATED IMAGE STYLES */
         img {
-            width: 100%; /* This makes the image fill the container width */
-            height: auto; /* This keeps the image from looking stretched */
-            max-height: 50vh; /* Optional limit so it doesn't take up the WHOLE vertical screen on phones */
+            width: 100%;
+            height: auto;
+            max-height: 50vh;
             border-radius: 15px;
             margin-bottom: 20px;
             object-fit: cover;
@@ -42,7 +42,6 @@
         .btn-group {
             position: relative;
             height: 60px;
-            /* Added margin to ensure space for the moving button */
             margin-top: 20px;
         }
         button {
@@ -52,73 +51,89 @@
             border-radius: 50px;
             cursor: pointer;
             color: white;
+            font-weight: bold;
             transition: transform 0.2s;
         }
         #yesBtn {
-            background-color: #28a745; /* Green */
+            background-color: #ff4d4d; /* Rose Red */
             margin-right: 15px;
         }
         #noBtn {
-            background-color: #dc3545; /* Red */
-            position: absolute; /* Allows it to move freely */
-            left: 55%; /* positions it initially next to the Yes button */
+            background-color: #888;
+            position: absolute;
+            left: 55%;
         }
-        /* Celebration message hidden by default */
         #message {
             display: none;
             color: #ff4d4d;
-            font-size: 24px;
+            font-size: 28px;
             margin-top: 20px;
             font-weight: bold;
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
 
+    <audio id="romanticMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="container">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2QzOTA3M2U0OTI1ODQ2OTg2NDQzNTJjZTI4MzFhOWQ5N2JkODFkMyZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/3o7TKoWXm3okO1kgHC/giphy.gif" alt="Cute Bear">
+        <img id="displayImage" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmc3bmthYm03cXAxeXp3Nm90cHZreG93YTN6bm5mYm0ycXByY296eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/I1nwVpCaE4k36/giphy.gif" alt="Cute Bear">
         
         <h1 id="question">Will you be my Valentine?</h1>
         
-        <div class="btn-group">
+        <div class="btn-group" id="buttons">
             <button id="yesBtn" onclick="acceptLove()">Yes</button>
             <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
         </div>
 
         <div id="message">
-            Yay! See you on the 14th! 💖🥰
+            Yay! See you on the 14th! ❤️<br>
+            🥰😘✨
         </div>
     </div>
 
     <script>
-        // Initial setup to center buttons better since container is wider
+        // Set the "No" button position initially
         window.onload = function() {
              const noBtn = document.getElementById('noBtn');
              const yesBtn = document.getElementById('yesBtn');
-             // Offset the 'no' button slightly to the right of center initially
              noBtn.style.left = (yesBtn.offsetLeft + yesBtn.offsetWidth + 20) + 'px';
         };
 
-
         function moveButton() {
-            // Ensure button stays within visible bounds
-            var x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
-            var y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
-            
-            var btn = document.getElementById('noBtn');
-            btn.style.position = 'fixed'; /* Ensures it breaks out of the container */
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+            const noBtn = document.getElementById('noBtn');
+            // Move button to a random spot on the screen
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40) + 20;
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40) + 20;
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
         }
 
         function acceptLove() {
+            // Play Music
+            document.getElementById('romanticMusic').play();
+
+            // Hide Question & Buttons
             document.getElementById('question').style.display = 'none';
-            document.getElementById('yesBtn').style.display = 'none';
-            document.getElementById('noBtn').style.display = 'none';
+            document.getElementById('buttons').style.display = 'none';
+            
+            // Show Message
             document.getElementById('message').style.display = 'block';
             
-            // Change image to a happy one
-            document.querySelector('img').src = "https://media.giphy.com/media/MdqE46HziuFjtWW2ca/giphy.gif";
+            // NEW RELIABLE IMAGE: Happy Dancing Bear
+            document.getElementById('displayImage').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueXpueXpueXpueXpueXpueXpueXpueXpueXpueXpueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/S96pW9Ssh94hI73zLp/giphy.gif";
+
+            // Confetti
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff4d4d', '#ffffff', '#ffccd5']
+            });
         }
     </script>
 </body>
