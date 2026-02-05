@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Question for You ❤️</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body {
-            background-color: #ffe6e6;
+            background-color: #ffe6e6; /* Light pink background */
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            min-height: 100vh; /* Changed to min-height for better mobile view */
             margin: 0;
-            overflow: hidden; 
+            overflow: hidden; /* Prevents scrollbars when button moves */
         }
         .container {
             text-align: center;
@@ -22,19 +21,20 @@
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 500px; 
-            width: 90%;
-            z-index: 10;
+            /* UPDATED: Made the container wider to accommodate a bigger image */
+            max-width: 600px; 
+            width: 90%; /* Ensures it looks good on mobile too */
         }
         h1 {
             color: #ff4d4d;
             font-size: 28px;
             margin-bottom: 20px;
         }
+        /* UPDATED IMAGE STYLES */
         img {
-            width: 100%;
-            height: auto;
-            max-height: 40vh;
+            width: 100%; /* This makes the image fill the container width */
+            height: auto; /* This keeps the image from looking stretched */
+            max-height: 50vh; /* Optional limit so it doesn't take up the WHOLE vertical screen on phones */
             border-radius: 15px;
             margin-bottom: 20px;
             object-fit: cover;
@@ -42,34 +42,32 @@
         .btn-group {
             position: relative;
             height: 60px;
+            /* Added margin to ensure space for the moving button */
             margin-top: 20px;
         }
         button {
-            padding: 12px 35px;
+            padding: 10px 30px;
             font-size: 18px;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             color: white;
-            font-weight: bold;
+            transition: transform 0.2s;
         }
         #yesBtn {
-            background-color: #ff4d4d; /* Matching the red theme */
-            transition: transform 0.3s;
-        }
-        #yesBtn:hover {
-            transform: scale(1.1);
+            background-color: #28a745; /* Green */
+            margin-right: 15px;
         }
         #noBtn {
-            background-color: #888; /* Grey so it looks less "clickable" */
-            position: absolute;
-            left: 55%;
-            transition: 0.1s;
+            background-color: #dc3545; /* Red */
+            position: absolute; /* Allows it to move freely */
+            left: 55%; /* positions it initially next to the Yes button */
         }
+        /* Celebration message hidden by default */
         #message {
             display: none;
             color: #ff4d4d;
-            font-size: 26px;
+            font-size: 24px;
             margin-top: 20px;
             font-weight: bold;
         }
@@ -78,7 +76,7 @@
 <body>
 
     <div class="container">
-        <img id="mainImage" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2QzOTA3M2U0OTI1ODQ2OTg2NDQzNTJjZTI4MzFhOWQ5N2JkODFkMyZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/3o7TKoWXm3okO1kgHC/giphy.gif" alt="Cute Bear">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2QzOTA3M2U0OTI1ODQ2OTg2NDQzNTJjZTI4MzFhOWQ5N2JkODFkMyZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/3o7TKoWXm3okO1kgHC/giphy.gif" alt="Cute Bear">
         
         <h1 id="question">Will you be my Valentine?</h1>
         
@@ -88,57 +86,39 @@
         </div>
 
         <div id="message">
-            Yay! Can't wait! 💖🥰
+            Yay! See you on the 14th! 💖🥰
         </div>
     </div>
 
     <script>
+        // Initial setup to center buttons better since container is wider
+        window.onload = function() {
+             const noBtn = document.getElementById('noBtn');
+             const yesBtn = document.getElementById('yesBtn');
+             // Offset the 'no' button slightly to the right of center initially
+             noBtn.style.left = (yesBtn.offsetLeft + yesBtn.offsetWidth + 20) + 'px';
+        };
+
+
         function moveButton() {
-            const btn = document.getElementById('noBtn');
-            // Calculate random positions, but keep the button away from the screen edges
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth - 40) + 20;
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight - 40) + 20;
+            // Ensure button stays within visible bounds
+            var x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
+            var y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
             
-            btn.style.position = 'fixed';
+            var btn = document.getElementById('noBtn');
+            btn.style.position = 'fixed'; /* Ensures it breaks out of the container */
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
         }
 
         function acceptLove() {
-            // 1. Hide the question and buttons
             document.getElementById('question').style.display = 'none';
-            document.querySelector('.btn-group').style.display = 'none';
-            
-            // 2. Show the success message
+            document.getElementById('yesBtn').style.display = 'none';
+            document.getElementById('noBtn').style.display = 'none';
             document.getElementById('message').style.display = 'block';
             
-            // 3. Change to a happy GIF
-            document.getElementById('mainImage').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJpYmJueW01dm8zYmZqamM5M2ZidG50Z3R4bmh0bmh0bmh0bmh0JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/K979lF5t6q0vC/giphy.gif";
-
-            // 4. TRIGGER CONFETTI!
-            var duration = 3 * 1000;
-            var end = Date.now() + duration;
-
-            (function frame() {
-              confetti({
-                particleCount: 3,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0 },
-                colors: ['#ff4d4d', '#ffccd5']
-              });
-              confetti({
-                particleCount: 3,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1 },
-                colors: ['#ff4d4d', '#ffccd5']
-              });
-
-              if (Date.now() < end) {
-                requestAnimationFrame(frame);
-              }
-            }());
+            // Change image to a happy one
+            document.querySelector('img').src = "https://media.giphy.com/media/MdqE46HziuFjtWW2ca/giphy.gif";
         }
     </script>
 </body>
