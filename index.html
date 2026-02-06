@@ -11,39 +11,31 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Changed to min-height for better mobile view */
+            height: 100vh;
             margin: 0;
             overflow: hidden; /* Prevents scrollbars when button moves */
         }
         .container {
             text-align: center;
             background: white;
-            padding: 30px;
+            padding: 40px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            /* UPDATED: Made the container wider to accommodate a bigger image */
-            max-width: 600px; 
-            width: 90%; /* Ensures it looks good on mobile too */
+            max-width: 400px;
         }
         h1 {
             color: #ff4d4d;
             font-size: 28px;
             margin-bottom: 20px;
         }
-        /* UPDATED IMAGE STYLES */
         img {
-            width: 100%; /* This makes the image fill the container width */
-            height: auto; /* This keeps the image from looking stretched */
-            max-height: 50vh; /* Optional limit so it doesn't take up the WHOLE vertical screen on phones */
-            border-radius: 15px;
+            width: 200px;
+            border-radius: 10px;
             margin-bottom: 20px;
-            object-fit: cover;
         }
         .btn-group {
             position: relative;
             height: 60px;
-            /* Added margin to ensure space for the moving button */
-            margin-top: 20px;
         }
         button {
             padding: 10px 30px;
@@ -61,7 +53,6 @@
         #noBtn {
             background-color: #dc3545; /* Red */
             position: absolute; /* Allows it to move freely */
-            left: 55%; /* positions it initially next to the Yes button */
         }
         /* Celebration message hidden by default */
         #message {
@@ -91,24 +82,16 @@
     </div>
 
     <script>
-        // Initial setup to center buttons better since container is wider
-        window.onload = function() {
-             const noBtn = document.getElementById('noBtn');
-             const yesBtn = document.getElementById('yesBtn');
-             // Offset the 'no' button slightly to the right of center initially
-             noBtn.style.left = (yesBtn.offsetLeft + yesBtn.offsetWidth + 20) + 'px';
-        };
-
-
         function moveButton() {
-            // Ensure button stays within visible bounds
-            var x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
-            var y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
+            var x = Math.random() * (window.innerWidth - 100) - 50;
+            var y = Math.random() * (window.innerHeight - 100) - 50;
             
+            // Keep it somewhat near the center/visible area
+            // This logic simply moves it to a random spot on the screen
             var btn = document.getElementById('noBtn');
-            btn.style.position = 'fixed'; /* Ensures it breaks out of the container */
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+            btn.style.position = 'fixed';
+            btn.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+            btn.style.top = Math.random() * (window.innerHeight - 50) + 'px';
         }
 
         function acceptLove() {
